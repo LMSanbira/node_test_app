@@ -1,7 +1,10 @@
 const express = require("express");
 const Joi = require("joi");
 const app = express();
+const cors = require("cors");
 app.use(express.json());
+app.use(cors({ credentials: true, origin: true }));
+app.use(logDate);
 
 const gems = [
   { id: 1, name: "pearl" },
@@ -67,6 +70,11 @@ function validateGemParams(gem) {
   };
 
   return Joi.validate(gem, schema).error;
+}
+
+function logDate(req, res, next) {
+  console.log(req.method, req.url, Date.now());
+  next();
 }
 
 function newId() {
