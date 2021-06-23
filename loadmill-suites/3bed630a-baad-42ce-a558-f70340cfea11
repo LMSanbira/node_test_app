@@ -62,7 +62,7 @@
             "description": "req req"
           },
           {
-            "url": "kgkgkgkg.commm",
+            "url": "kgkgkgkg.commmmmm",
             "method": "GET",
             "headers": [],
             "assert": [],
@@ -73,6 +73,58 @@
         ],
         "meta": {
           "description": "flow number one"
+        },
+        "parameterPools": [],
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "rampUp": 60000,
+        "skipLoginFlow": false,
+        "parameters": [
+          {
+            "p": "1"
+          },
+          {
+            "a": "2"
+          },
+          {
+            "p": "1"
+          },
+          {
+            "a": "2"
+          },
+          {
+            "p": "p"
+          },
+          {
+            "a": "a"
+          },
+          {
+            "pppp": "dddd"
+          }
+        ]
+      },
+      "runInCi": false
+    },
+    {
+      "id": "34af8937-d443-488b-9bcc-568279da4f03",
+      "order": 1,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "ynet.com",
+            "method": "GET",
+            "headers": [],
+            "assert": [],
+            "extract": [],
+            "timeout": 60000,
+            "expectedStatus": "SUCCESS"
+          }
+        ],
+        "meta": {
+          "description": "New Flowjjjjjjj"
         },
         "parameterPools": [],
         "targetedCountries": [],
