@@ -57,6 +57,15 @@
             "timeout": 60000,
             "expectedStatus": "SUCCESS",
             "description": "req req"
+          },
+          {
+            "url": "kgkgkgkg.commm",
+            "method": "GET",
+            "headers": [],
+            "assert": [],
+            "extract": [],
+            "timeout": 60000,
+            "expectedStatus": "SUCCESS"
           }
         ],
         "meta": {
