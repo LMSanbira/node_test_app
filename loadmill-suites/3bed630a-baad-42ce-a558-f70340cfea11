@@ -24,6 +24,12 @@
         "a": "2"
       },
       {
+        "p": "1"
+      },
+      {
+        "a": "2"
+      },
+      {
         "p": "p"
       },
       {
@@ -51,16 +57,6 @@
             "timeout": 60000,
             "expectedStatus": "SUCCESS",
             "description": "req req"
-          },
-          {
-            "url": "bbb.com",
-            "method": "GET",
-            "headers": [],
-            "assert": [],
-            "extract": [],
-            "timeout": 60000,
-            "expectedStatus": "SUCCESS",
-            "description": "req req reqqq"
           }
         ],
         "meta": {
@@ -73,6 +69,12 @@
         "rampUp": 60000,
         "skipLoginFlow": false,
         "parameters": [
+          {
+            "p": "1"
+          },
+          {
+            "a": "2"
+          },
           {
             "p": "1"
           },
