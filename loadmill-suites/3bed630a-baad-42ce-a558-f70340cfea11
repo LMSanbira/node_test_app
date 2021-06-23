@@ -1,0 +1,90 @@
+{
+  "conf": {
+    "meta": {
+      "description": "Github sync"
+    },
+    "loginFlow": [
+      {
+        "url": "google.com?${p}=${a}",
+        "method": "GET",
+        "headers": [],
+        "assert": [],
+        "extract": [],
+        "timeout": 60000,
+        "expectedStatus": "SUCCESS",
+        "description": "req 1"
+      }
+    ],
+    "useCookies": true,
+    "parameters": [
+      {
+        "p": "1"
+      },
+      {
+        "a": "2"
+      },
+      {
+        "p": "p"
+      },
+      {
+        "a": "a"
+      }
+    ],
+    "authenticationHeaders": [],
+    "parametersScope": "FLOW",
+    "sharedLoginFlowDescription": "for Github"
+  },
+  "flows": [
+    {
+      "id": "29546b9c-0dff-48e4-a81b-d81179adadc1",
+      "order": 0,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "walla.com?${p}=${a}",
+            "method": "GET",
+            "headers": [],
+            "assert": [],
+            "extract": [],
+            "timeout": 60000,
+            "expectedStatus": "SUCCESS",
+            "description": "req req"
+          }
+        ],
+        "meta": {
+          "description": "flow number one"
+        },
+        "parameterPools": [],
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "rampUp": 60000,
+        "skipLoginFlow": false,
+        "parameters": [
+          {
+            "p": "1"
+          },
+          {
+            "a": "2"
+          },
+          {
+            "p": "p"
+          },
+          {
+            "a": "a"
+          }
+        ]
+      },
+      "runInCi": false
+    }
+  ],
+  "hooks": {},
+  "dependencies": {
+    "hooks": {},
+    "login": {
+      "id": "61413ef4-47cc-4e59-b56b-447f90d0dfc4"
+    }
+  }
+}
