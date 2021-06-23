@@ -51,6 +51,16 @@
             "timeout": 60000,
             "expectedStatus": "SUCCESS",
             "description": "req req"
+          },
+          {
+            "url": "bbb.com",
+            "method": "GET",
+            "headers": [],
+            "assert": [],
+            "extract": [],
+            "timeout": 60000,
+            "expectedStatus": "SUCCESS",
+            "description": "req req reqqq"
           }
         ],
         "meta": {
