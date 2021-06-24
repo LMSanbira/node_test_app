@@ -3,6 +3,18 @@
     "meta": {
       "description": "Github sync"
     },
+    "loginFlow": [
+      {
+        "url": "google.com?${p}=${a}",
+        "method": "GET",
+        "headers": [],
+        "assert": [],
+        "extract": [],
+        "timeout": 60000,
+        "expectedStatus": "SUCCESS",
+        "description": "req 1"
+      }
+    ],
     "useCookies": true,
     "parameters": [
       {
@@ -22,25 +34,10 @@
       },
       {
         "a": "a"
-      },
-      {
-        "pppp": "dddd"
       }
     ],
     "authenticationHeaders": [],
     "parametersScope": "FLOW",
-    "loginFlow": [
-      {
-        "url": "google.com?${p}=${a}",
-        "method": "GET",
-        "headers": [],
-        "assert": [],
-        "extract": [],
-        "timeout": 60000,
-        "expectedStatus": "SUCCESS",
-        "description": "req 1"
-      }
-    ],
     "sharedLoginFlowDescription": "for Github"
   },
   "flows": [
@@ -62,13 +59,14 @@
             "description": "req req"
           },
           {
-            "url": "kgkgkgkg.commmmmm",
+            "url": "bbb.com",
             "method": "GET",
             "headers": [],
             "assert": [],
             "extract": [],
             "timeout": 60000,
-            "expectedStatus": "SUCCESS"
+            "expectedStatus": "SUCCESS",
+            "description": "req req reqqq"
           }
         ],
         "meta": {
@@ -98,61 +96,6 @@
           },
           {
             "a": "a"
-          },
-          {
-            "pppp": "dddd"
-          }
-        ]
-      },
-      "runInCi": false
-    },
-    {
-      "id": "34af8937-d443-488b-9bcc-568279da4f03",
-      "order": 1,
-      "conf": {
-        "duration": 60000,
-        "concurrency": 1,
-        "requests": [
-          {
-            "url": "ynet.com",
-            "method": "GET",
-            "headers": [],
-            "assert": [],
-            "extract": [],
-            "timeout": 60000,
-            "expectedStatus": "SUCCESS"
-          }
-        ],
-        "meta": {
-          "description": "New Flowjjjjjjj"
-        },
-        "parameterPools": [],
-        "targetedCountries": [],
-        "iterationDelay": 1000,
-        "cachePenetration": {},
-        "rampUp": 60000,
-        "skipLoginFlow": false,
-        "parameters": [
-          {
-            "p": "1"
-          },
-          {
-            "a": "2"
-          },
-          {
-            "p": "1"
-          },
-          {
-            "a": "2"
-          },
-          {
-            "p": "p"
-          },
-          {
-            "a": "a"
-          },
-          {
-            "pppp": "dddd"
           }
         ]
       },
