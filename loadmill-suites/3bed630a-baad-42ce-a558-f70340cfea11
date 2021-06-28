@@ -55,7 +55,7 @@
         "concurrency": 1,
         "requests": [
           {
-            "url": "walla.com?${p}=${a}d",
+            "url": "walla.com?${p}=${a}dd",
             "method": "GET",
             "headers": [],
             "assert": [],
