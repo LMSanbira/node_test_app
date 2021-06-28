@@ -30,6 +30,12 @@
         "a": "2"
       },
       {
+        "p": "1"
+      },
+      {
+        "a": "2"
+      },
+      {
         "p": "p"
       },
       {
@@ -49,7 +55,7 @@
         "concurrency": 1,
         "requests": [
           {
-            "url": "walla.com?${p}=${a}",
+            "url": "walla.com?${p}=${a}d",
             "method": "GET",
             "headers": [],
             "assert": [],
@@ -59,7 +65,7 @@
             "description": "req req"
           },
           {
-            "url": "bbb.commmmmmm",
+            "url": "bbb.commm",
             "method": "GET",
             "headers": [],
             "assert": [],
@@ -85,49 +91,6 @@
           {
             "a": "2"
           },
-          {
-            "p": "1"
-          },
-          {
-            "a": "2"
-          },
-          {
-            "p": "p"
-          },
-          {
-            "a": "a"
-          }
-        ]
-      },
-      "runInCi": false
-    },
-    {
-      "id": "d7b391e5-0365-4540-9029-cdab4dd148e0",
-      "order": 1,
-      "conf": {
-        "duration": 60000,
-        "concurrency": 1,
-        "requests": [
-          {
-            "url": "walla.com",
-            "method": "GET",
-            "headers": [],
-            "assert": [],
-            "extract": [],
-            "timeout": 60000,
-            "expectedStatus": "SUCCESS"
-          }
-        ],
-        "meta": {
-          "description": "im not good"
-        },
-        "parameterPools": [],
-        "targetedCountries": [],
-        "iterationDelay": 1000,
-        "cachePenetration": {},
-        "rampUp": 60000,
-        "skipLoginFlow": false,
-        "parameters": [
           {
             "p": "1"
           },
