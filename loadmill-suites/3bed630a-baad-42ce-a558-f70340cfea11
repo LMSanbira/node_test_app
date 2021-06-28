@@ -30,6 +30,12 @@
         "a": "2"
       },
       {
+        "p": "1"
+      },
+      {
+        "a": "2"
+      },
+      {
         "p": "p"
       },
       {
@@ -49,7 +55,7 @@
         "concurrency": 1,
         "requests": [
           {
-            "url": "walla.com?${p}=${a}",
+            "url": "walla.com?${p}=${a}ddsfgh",
             "method": "GET",
             "headers": [],
             "assert": [],
@@ -79,6 +85,12 @@
         "rampUp": 60000,
         "skipLoginFlow": false,
         "parameters": [
+          {
+            "p": "1"
+          },
+          {
+            "a": "2"
+          },
           {
             "p": "1"
           },
