@@ -1,0 +1,766 @@
+{
+  "conf": {
+    "meta": {
+      "description": "API tests examples"
+    },
+    "useCookies": true,
+    "parameters": [
+      {
+        "blog_url": "https://loadmill-test-blog.herokuapp.com"
+      },
+      {
+        "username": "a@b.com"
+      },
+      {
+        "password": "Test1234"
+      },
+      {
+        "client_secret": "8c93bf1bb580"
+      },
+      {
+        "p2_request_body_posts_0_title": "My test post ${__random_number}"
+      }
+    ],
+    "loginFlow": [
+      {
+        "url": "${blog_url}/ghost/api/v0.1/authentication/token",
+        "description": "🗝 Global login request - adds Authorization header to all following requests ",
+        "postData": {
+          "text": "grant_type=password&username=${username}&password=${password}&client_id=ghost-admin&client_secret=${client_secret}",
+          "mimeType": "application/x-www-form-urlencoded"
+        },
+        "method": "POST",
+        "headers": [
+          {
+            "Accept": "application/json, text/javascript, */*; q=0.01"
+          },
+          {
+            "X-Requested-With": "XMLHttpRequest"
+          },
+          {
+            "Accept-Language": "en-US,en;q=0.9,he;q=0.8,pt;q=0.7"
+          }
+        ],
+        "extract": [
+          {
+            "access_token": {
+              "jsonPath": "$[\"access_token\"]"
+            }
+          },
+          {
+            "token_type": {
+              "jsonPath": "$[\"token_type\"]"
+            }
+          }
+        ],
+        "postScript": "",
+        "timeout": 25000,
+        "expectedStatus": "SUCCESS"
+      }
+    ],
+    "authenticationHeaders": [
+      {
+        "Authorization": "${token_type} ${access_token}"
+      }
+    ],
+    "sharedLoginFlowDescription": "New Load Test - Sep 09"
+  },
+  "flows": [
+    {
+      "id": "8785874d-5af2-4432-9977-0c97a7ce6bd7",
+      "order": 0,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "${blog_url}/ghost/signin/",
+            "description": "🚪 Load login page ",
+            "method": "GET",
+            "headers": [
+              {
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+              },
+              {
+                "Accept-Language": "en-US,en;q=0.9,he;q=0.8,pt;q=0.7"
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          },
+          {
+            "url": "${blog_url}/ghost/api/v0.1/authentication/token",
+            "description": "🔑 Authentication request - extract token using JSONPath from the response ",
+            "postData": {
+              "text": "grant_type=password&username=${username}&password=${password}&client_id=ghost-admin&client_secret=${client_secret}",
+              "mimeType": "application/x-www-form-urlencoded"
+            },
+            "method": "POST",
+            "headers": [
+              {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+              },
+              {
+                "X-Requested-With": "XMLHttpRequest"
+              },
+              {
+                "Accept-Language": "en-US,en;q=0.9,he;q=0.8,pt;q=0.7"
+              }
+            ],
+            "extract": [
+              {
+                "access_token": {
+                  "jsonPath": "$[\"access_token\"]"
+                }
+              },
+              {
+                "token_type": {
+                  "jsonPath": "$[\"token_type\"]"
+                }
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          },
+          {
+            "url": "${blog_url}/ghost/api/v0.1/posts/?include=tags",
+            "description": "📝 Create new blog post - extract its id using JSONPath from the response",
+            "postData": {
+              "text": "{\"posts\":[{\"title\":\"${__escape_quotes(p2_request_body_posts_0_title)}\",\"slug\":\"my-test-post-123\",\"markdown\":\"\",\"image\":null,\"featured\":false,\"page\":false,\"status\":\"draft\",\"language\":\"en_US\",\"meta_title\":null,\"meta_description\":null,\"author\":\"1\",\"publishedBy\":null,\"tags\":[]}]}",
+              "mimeType": "application/json; charset=UTF-8"
+            },
+            "method": "POST",
+            "headers": [
+              {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+              },
+              {
+                "X-Requested-With": "XMLHttpRequest"
+              },
+              {
+                "X-Ghost-Version": "0.11"
+              },
+              {
+                "Authorization": "${token_type} ${access_token}"
+              },
+              {
+                "Accept-Language": "en-US,en;q=0.9,he;q=0.8,pt;q=0.7"
+              }
+            ],
+            "extract": [
+              {
+                "created_post_id": {
+                  "jsonPath": "$[\"posts\"][0][\"id\"]"
+                }
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          },
+          {
+            "url": "${blog_url}/ghost/api/v0.1/posts/${created_post_id}/?include=tags",
+            "description": "🎉 Publish the created blog post using its extracted id",
+            "postData": {
+              "text": "{\"posts\":[{\"id\":${created_post_id},\"title\":\"${p2_request_body_posts_0_title}\",\"slug\":\"my-test-post-123\",\"markdown\":\"A very interesting blog post content\",\"image\":null,\"featured\":false,\"page\":false,\"status\":\"published\",\"language\":\"en_US\",\"meta_title\":null,\"meta_description\":null,\"updated_at\":\"2020-03-01T13:49:41.000Z\",\"updated_by\":1,\"published_at\":null,\"created_at\":\"2020-03-01T13:49:29.000Z\",\"created_by\":1,\"author\":\"1\",\"publishedBy\":null,\"tags\":[]}]}",
+              "mimeType": "application/json; charset=UTF-8"
+            },
+            "method": "PUT",
+            "headers": [
+              {
+                "Host": "loadmill-test-blog.herokuapp.com"
+              },
+              {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+              },
+              {
+                "X-Requested-With": "XMLHttpRequest"
+              },
+              {
+                "X-Ghost-Version": "0.11"
+              },
+              {
+                "Authorization": "${token_type} ${access_token}"
+              },
+              {
+                "Content-Type": "application/json; charset=UTF-8"
+              },
+              {
+                "Accept-Language": "en-US,en;q=0.9,he;q=0.8,pt;q=0.7"
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          }
+        ],
+        "meta": {
+          "description": "🔑 Login & create a blog post"
+        },
+        "skipLoginFlow": true,
+        "rampUp": 60000,
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "parameters": [
+          {
+            "blog_url": "https://loadmill-test-blog.herokuapp.com"
+          },
+          {
+            "username": "a@b.com"
+          },
+          {
+            "password": "Test1234"
+          },
+          {
+            "client_secret": "8c93bf1bb580"
+          },
+          {
+            "p2_request_body_posts_0_title": "My test post ${__random_number}"
+          }
+        ]
+      },
+      "runInCi": false
+    },
+    {
+      "id": "2c17d811-72ff-414a-8f5d-d5161630bdd1",
+      "order": 1,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "${blog_url}/ghost/api/v0.1/posts/?include=tags",
+            "description": "Create a new blog post (authenticated by global login section)",
+            "postData": {
+              "text": "{\"posts\":[{\"title\":\"${__escape_quotes(p2_request_body_posts_0_title)}\",\"slug\":\"my-test-post-123\",\"markdown\":\"\",\"image\":null,\"featured\":false,\"page\":false,\"status\":\"draft\",\"language\":\"en_US\",\"meta_title\":null,\"meta_description\":null,\"author\":\"1\",\"publishedBy\":null,\"tags\":[]}]}",
+              "mimeType": "application/json; charset=UTF-8"
+            },
+            "method": "POST",
+            "headers": [
+              {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+              },
+              {
+                "X-Requested-With": "XMLHttpRequest"
+              },
+              {
+                "X-Ghost-Version": "0.11"
+              },
+              {
+                "Accept-Language": "en-US,en;q=0.9,he;q=0.8,pt;q=0.7"
+              }
+            ],
+            "extract": [
+              {
+                "created_post_id": {
+                  "jsonPath": "$[\"posts\"][0][\"id\"]"
+                }
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          },
+          {
+            "url": "${blog_url}/ghost/api/v0.1/posts/${created_post_id}/?include=tags",
+            "description": "Publish the created blog post (authenticated by global login section)",
+            "postData": {
+              "text": "{\"posts\":[{\"id\":${created_post_id},\"title\":\"${p2_request_body_posts_0_title}\",\"slug\":\"my-test-post-123\",\"markdown\":\"A very interesting blog post content\",\"image\":null,\"featured\":false,\"page\":false,\"status\":\"published\",\"language\":\"en_US\",\"meta_title\":null,\"meta_description\":null,\"updated_at\":\"2020-03-01T13:49:41.000Z\",\"updated_by\":1,\"published_at\":null,\"created_at\":\"2020-03-01T13:49:29.000Z\",\"created_by\":1,\"author\":\"1\",\"publishedBy\":null,\"tags\":[]}]}",
+              "mimeType": "application/json; charset=UTF-8"
+            },
+            "method": "PUT",
+            "headers": [
+              {
+                "Host": "loadmill-test-blog.herokuapp.com"
+              },
+              {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+              },
+              {
+                "X-Requested-With": "XMLHttpRequest"
+              },
+              {
+                "X-Ghost-Version": "0.11"
+              },
+              {
+                "Content-Type": "application/json; charset=UTF-8"
+              },
+              {
+                "Accept-Language": "en-US,en;q=0.9,he;q=0.8,pt;q=0.7"
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          }
+        ],
+        "meta": {
+          "description": "🗝 Using global login flow"
+        },
+        "skipLoginFlow": false,
+        "rampUp": 60000,
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "parameters": [
+          {
+            "blog_url": "https://loadmill-test-blog.herokuapp.com"
+          },
+          {
+            "username": "a@b.com"
+          },
+          {
+            "password": "Test1234"
+          },
+          {
+            "client_secret": "8c93bf1bb580"
+          },
+          {
+            "p2_request_body_posts_0_title": "My test post ${__random_number}"
+          }
+        ]
+      },
+      "runInCi": false
+    },
+    {
+      "id": "1740dca6-5da6-4721-a5a1-51684ff4edcb",
+      "order": 2,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "${blog_url}/ghost/api/v0.1/users/me/?include=roles&status=all",
+            "description": "Extract user name and verify it is \"Jon Skeet\"",
+            "method": "GET",
+            "headers": [
+              {
+                "Host": "loadmill-test-blog.herokuapp.com"
+              },
+              {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+              },
+              {
+                "X-Requested-With": "XMLHttpRequest"
+              },
+              {
+                "X-Ghost-Version": "0.11"
+              },
+              {
+                "Authorization": "Bearer lfx7QirI9dt3UpShLHuqmI9JdaiNos8YfakAkWKLh25eEMSrvrJkyOTgyuW7djfAcSqr2aLYftkoy9bvAMuD1LBYGG53wp2uGUihPy1YIFKXYW5xgND3DBVUoOoxkA0J6DrUOr3E5r8gw3Azx0HLeHPGzqDGR1ppezVAuPKdVz0yGkbKDs7ptbcxuxklLDZ7sTNQQy23zwhsX7mwdZ7SrEFkvzJrAYBatzgBkZnEaxWpxIVSF8fhnoFGxz9TPC4"
+              },
+              {
+                "Accept-Language": "en-US,en;q=0.9,he;q=0.8,pt;q=0.7"
+              }
+            ],
+            "assert": [
+              {
+                "check": "user_name",
+                "equals": "Jon Skeet"
+              }
+            ],
+            "extract": [
+              {
+                "user_name": {
+                  "jsonPath": "$.users[0].name"
+                }
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          }
+        ],
+        "meta": {
+          "description": "🔍 Extract using JSONPath"
+        },
+        "skipLoginFlow": false,
+        "rampUp": 60000,
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "parameters": [
+          {
+            "blog_url": "https://loadmill-test-blog.herokuapp.com"
+          },
+          {
+            "username": "a@b.com"
+          },
+          {
+            "password": "Test1234"
+          },
+          {
+            "client_secret": "8c93bf1bb580"
+          },
+          {
+            "p2_request_body_posts_0_title": "My test post ${__random_number}"
+          }
+        ]
+      },
+      "runInCi": false
+    },
+    {
+      "id": "c94c5a5f-5eb0-47d4-adbc-f6710757b4d4",
+      "order": 3,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "${blog_url}",
+            "description": "Extract user blog title and description from HTML",
+            "method": "GET",
+            "assert": [
+              {
+                "check": "blog_title"
+              },
+              {
+                "check": "blog_description",
+                "contains": "stories and ideas"
+              }
+            ],
+            "extract": [
+              {
+                "blog_title": {
+                  "jQuery": {
+                    "query": "title",
+                    "attr": ""
+                  }
+                }
+              },
+              {
+                "blog_description": {
+                  "jQuery": {
+                    "query": "meta[name=\"description\"]",
+                    "attr": "content"
+                  }
+                }
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          }
+        ],
+        "meta": {
+          "description": "🔎 Extract using jQuery (XPath)"
+        },
+        "skipLoginFlow": true,
+        "rampUp": 60000,
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "parameters": [
+          {
+            "blog_url": "https://loadmill-test-blog.herokuapp.com"
+          },
+          {
+            "username": "a@b.com"
+          },
+          {
+            "password": "Test1234"
+          },
+          {
+            "client_secret": "8c93bf1bb580"
+          },
+          {
+            "p2_request_body_posts_0_title": "My test post ${__random_number}"
+          }
+        ]
+      },
+      "runInCi": false
+    },
+    {
+      "id": "25f2994b-f28f-411d-ae41-1255ec49b7ed",
+      "order": 4,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "${blog_url}/ghost/signin/",
+            "description": "Verify login page has title and that the word \"error\" does not appear",
+            "method": "GET",
+            "assert": [
+              {
+                "check": "page_title"
+              },
+              {
+                "check": "error_in_page",
+                "falsy": true
+              }
+            ],
+            "extract": [
+              {
+                "page_title": {
+                  "regex": "<title>(.*?)<\\/title>"
+                }
+              },
+              {
+                "error_in_page": {
+                  "regex": "error"
+                }
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          }
+        ],
+        "meta": {
+          "description": "🔍 Extract using RegExp"
+        },
+        "skipLoginFlow": true,
+        "rampUp": 60000,
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "parameters": [
+          {
+            "blog_url": "https://loadmill-test-blog.herokuapp.com"
+          },
+          {
+            "username": "a@b.com"
+          },
+          {
+            "password": "Test1234"
+          },
+          {
+            "client_secret": "8c93bf1bb580"
+          },
+          {
+            "p2_request_body_posts_0_title": "My test post ${__random_number}"
+          }
+        ]
+      },
+      "runInCi": false
+    },
+    {
+      "id": "6f3d1791-5853-42b7-9d59-596a670857d8",
+      "order": 5,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "${blog_url}",
+            "description": "This test is toggled to run from external integrations ⬆ run it from the CI tab on the left",
+            "method": "GET",
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          }
+        ],
+        "meta": {
+          "description": "🤖 Continuous integration test (CI)"
+        },
+        "skipLoginFlow": true,
+        "rampUp": 60000,
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "parameters": [
+          {
+            "blog_url": "https://loadmill-test-blog.herokuapp.com"
+          },
+          {
+            "username": "a@b.com"
+          },
+          {
+            "password": "Test1234"
+          },
+          {
+            "client_secret": "8c93bf1bb580"
+          },
+          {
+            "p2_request_body_posts_0_title": "My test post ${__random_number}"
+          }
+        ]
+      },
+      "runInCi": true
+    },
+    {
+      "id": "9a38f2ed-6e77-42c8-9935-7fb026227689",
+      "order": 6,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "${blog_url}/a-non-existing-blog-post/",
+            "description": "Request a non-existing page and expect an error response with 404 status",
+            "method": "GET",
+            "assert": [
+              {
+                "check": "__status",
+                "equals": "404"
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "ERROR"
+          }
+        ],
+        "meta": {
+          "description": "🚫 Negative test case (failed request)"
+        },
+        "skipLoginFlow": true,
+        "rampUp": 60000,
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "parameters": [
+          {
+            "blog_url": "https://loadmill-test-blog.herokuapp.com"
+          },
+          {
+            "username": "a@b.com"
+          },
+          {
+            "password": "Test1234"
+          },
+          {
+            "client_secret": "8c93bf1bb580"
+          },
+          {
+            "p2_request_body_posts_0_title": "My test post ${__random_number}"
+          }
+        ]
+      },
+      "runInCi": false
+    },
+    {
+      "id": "e6b9a14a-a97c-4118-ab7d-3578de24a5b4",
+      "order": 7,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "google.com?${__random_letters('4')}",
+            "description": "Search google for a random 4-letter word ",
+            "method": "GET",
+            "extract": [
+              {
+                "the_time": "${__now_iso()}"
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          }
+        ],
+        "meta": {
+          "description": "💲 Using built-in parameters"
+        },
+        "skipLoginFlow": true,
+        "rampUp": 60000,
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "parameters": [
+          {
+            "blog_url": "https://loadmill-test-blog.herokuapp.com"
+          },
+          {
+            "username": "a@b.com"
+          },
+          {
+            "password": "Test1234"
+          },
+          {
+            "client_secret": "8c93bf1bb580"
+          },
+          {
+            "p2_request_body_posts_0_title": "My test post ${__random_number}"
+          }
+        ]
+      },
+      "runInCi": false
+    },
+    {
+      "id": "205a1511-a94f-4075-8713-972cd821e7ba",
+      "order": 8,
+      "conf": {
+        "duration": 60000,
+        "concurrency": 1,
+        "requests": [
+          {
+            "url": "${blog_url}/ghost/api/v0.1/configuration/timezones/",
+            "description": "Extract Hawaii timezone by label and verify that it is GMT -10:00",
+            "method": "GET",
+            "headers": [
+              {
+                "Host": "loadmill-test-blog.herokuapp.com"
+              },
+              {
+                "Accept": "application/json, text/javascript, */*; q=0.01"
+              },
+              {
+                "X-Requested-With": "XMLHttpRequest"
+              },
+              {
+                "X-Ghost-Version": "0.11"
+              },
+              {
+                "Accept-Language": "en-US,en;q=0.9,he;q=0.8,pt;q=0.7"
+              }
+            ],
+            "assert": [
+              {
+                "check": "hawaii_in_GMT",
+                "contains": "(GMT -9:00)"
+              }
+            ],
+            "extract": [
+              {
+                "hawaii_in_GMT": {
+                  "jsonPath": "$..[?(@.name == 'Pacific/Honolulu')].label"
+                }
+              }
+            ],
+            "postScript": "",
+            "timeout": 25000,
+            "expectedStatus": "SUCCESS"
+          }
+        ],
+        "meta": {
+          "description": "💔 Broken test flow - Fix me!"
+        },
+        "skipLoginFlow": true,
+        "rampUp": 60000,
+        "targetedCountries": [],
+        "iterationDelay": 1000,
+        "cachePenetration": {},
+        "parameters": [
+          {
+            "blog_url": "https://loadmill-test-blog.herokuapp.com"
+          },
+          {
+            "username": "a@b.com"
+          },
+          {
+            "password": "Test1234"
+          },
+          {
+            "client_secret": "8c93bf1bb580"
+          },
+          {
+            "p2_request_body_posts_0_title": "My test post ${__random_number}"
+          }
+        ]
+      },
+      "runInCi": false
+    }
+  ],
+  "hooks": {},
+  "dependencies": {
+    "hooks": {},
+    "login": {
+      "id": "85638878-55a1-41d2-b1dc-aa50c1fd6488"
+    }
+  }
+}
