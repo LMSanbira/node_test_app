@@ -1,0 +1,61 @@
+conf:
+  meta:
+    description: New Test Suite - Sep 23
+  useCookies: true
+  parameters:
+    - p1: "123"
+    - p2: jneojneognqoeignoqeienoqiegnoqeingoignininininiginginininigninininniniinginignininrininginiengoinoiegnoin
+    - p3: erg${p1}
+    - p4: rfrfrf${__random()}
+    - p5: ""
+    - p6: ww
+    - p7:
+        - eeeee
+        - efewef
+        - qwefqewf
+    - ubgubgubugbubububugbububububgububugbubugbubgububgububgububububgububgubugbugbubgubgu: ffofonf
+    - p1: "123"
+  loginFlow:
+    - url: walla.com
+      stopBefore: ""
+      delay: ""
+      method: GET
+      postScript: ""
+      timeout: 60000
+      expectedStatus: SUCCESS
+  authenticationHeaders: []
+  parametersScope: FLOW
+  sharedLoginFlowDescription: lots params
+flows:
+  - id: fe4f1a67-5532-48b2-bfd5-fe0672634b86
+    order: 0
+    conf:
+      duration: 60000
+      concurrency: 1
+      requests:
+        - method: GET
+          url: www.walla.co.il?p1=${p1}
+      meta:
+        description: New Flow
+      rampUp: 60000
+      targetedCountries: []
+      iterationDelay: 1000
+      cachePenetration: {}
+      parameters:
+        - p1: "123"
+        - p2: jneojneognqoeignoqeienoqiegnoqeingoignininininiginginininigninininniniinginignininrininginiengoinoiegnoin
+        - p3: erg${p1}
+        - p4: rfrfrf${__random()}
+        - p5: ""
+        - p6: ww
+        - p7:
+            - eeeee
+            - efewef
+            - qwefqewf
+        - ubgubgubugbubububugbububububgububugbubugbubgububgububgububububgububgubugbugbubgubgu: ffofonf
+        - p1: "123"
+    runInCi: false
+hooks: {}
+dependencies:
+  login:
+    id: 8fad7e64-13ab-4117-a6e4-40da421f2a38
