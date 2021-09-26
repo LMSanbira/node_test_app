@@ -46,6 +46,8 @@ flows:
       requests:
         - method: GET
           url: www.walla.co.il?p1=${p1}
+        - method: GET
+          url: walla.com
       meta:
         description: New Flow
       rampUp: 60000
