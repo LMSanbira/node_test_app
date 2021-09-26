@@ -15,6 +15,17 @@ conf:
         - qwefqewf
     - ubgubgubugbubububugbububububgububugbubugbubgububgububgububububgububgubugbugbubgubgu: ffofonf
     - p1: "123"
+    - p2: jneojneognqoeignoqeienoqiegnoqeingoignininininiginginininigninininniniinginignininrininginiengoinoiegnoin
+    - p3: erg${p1}
+    - p4: rfrfrf${__random()}
+    - p5: ""
+    - p6: ww
+    - p7:
+        - eeeee
+        - efewef
+        - qwefqewf
+    - ubgubgubugbubububugbububububgububugbubugbubgububgububgububububgububgubugbugbubgubgu: ffofonf
+    - p1: "123"
   loginFlow:
     - url: walla.com
       stopBefore: ""
@@ -42,6 +53,17 @@ flows:
       iterationDelay: 1000
       cachePenetration: {}
       parameters:
+        - p1: "123"
+        - p2: jneojneognqoeignoqeienoqiegnoqeingoignininininiginginininigninininniniinginignininrininginiengoinoiegnoin
+        - p3: erg${p1}
+        - p4: rfrfrf${__random()}
+        - p5: ""
+        - p6: ww
+        - p7:
+            - eeeee
+            - efewef
+            - qwefqewf
+        - ubgubgubugbubububugbububububgububugbubugbubgububgububgububububgububgubugbugbubgubgu: ffofonf
         - p1: "123"
         - p2: jneojneognqoeignoqeienoqiegnoqeingoignininininiginginininigninininniniinginignininrininginiengoinoiegnoin
         - p3: erg${p1}
